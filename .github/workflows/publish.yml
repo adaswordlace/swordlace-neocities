@@ -11,12 +11,19 @@ concurrency: # prevent concurrent deploys doing strange things
   cancel-in-progress: true
 
 jobs:
-  deploy:
+
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Code
+      uses: actions/checkout@v4
     # When the dist_dir is ready, deploy it to neocities
+    - name: Render diary
+      uses: actions/shalzz/zola-deploy-action@v0.19.2
+      env:
+        BUILD_DIR: zola
+        BUILD_ONLY: true 
     - name: Deploy to neocities
       uses: bcomnes/deploy-to-neocities@v3
       with:
